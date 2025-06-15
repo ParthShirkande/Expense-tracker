@@ -15,6 +15,7 @@ import Home from './pages/Dashboard/Home'
 import Expense from './pages/Dashboard/Expense'
 import Income from './pages/Dashboard/Income'
 import UserProvider from './context/UserContext'
+import { useLocation } from 'react-router-dom'
 
 const App = () => {
 
@@ -25,11 +26,14 @@ const App = () => {
         <Router>
           <Routes>
             <Route path='/' element={<Root />} />
-            <Route path='/login' element={<Login />} />
+            {/* Remove direct access to /login and /signup */}
+            {/* <Route path='/login' element={<Login />} /> */}
             <Route path='/signup' element={<Signup />} />
             <Route path='/dashboard' element={<Home />} />
             <Route path='/income' element={<Income />} />
             <Route path='/expense' element={<Expense />} />
+            {/* Catch-all route to redirect any unknown path to root */}
+            <Route path='*' element={<Navigate to='/' />} />
           </Routes>
         </Router>
       </div>
@@ -39,13 +43,16 @@ const App = () => {
 
 export default App
 
-
 const Root = () => {
-  const isAuthenticated = !localStorage.getItem("token")
+  const isAuthenticated = !!localStorage.getItem("token")
+  const location = useLocation()
 
+  if (!isAuthenticated && location.pathname === '/signup') {
+    return <Signup />
+  }
   return isAuthenticated ? (
     <Navigate to='/dashboard' />
   ) : (
-    <Navigate to='/login' />
+    <Login /> // Show Login component at root if not authenticated
   )
 }
