@@ -24,14 +24,14 @@ export const useUserAuth = () => {
                         updateUser(response.data);
                     } else {
                         clearUser();
-                        navigate("/login");
+                        navigate("/");
                     }
                 }
             }
             catch (error) {
                 console.error("Error fetching user data:", error);
                 clearUser();
-                navigate("/login");
+                navigate("/");
             }
         }
         fetchUserData();
