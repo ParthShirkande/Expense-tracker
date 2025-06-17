@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
         if (error.response && error.response.status === 401) {
             // Handle unauthorized access, e.g., redirect to login
             localStorage.removeItem('token');
-            window.location.href = '/login';
+            window.location.href = '/';
         }
         else if (error.response && error.response.status === 403) {
             // Handle forbidden access
